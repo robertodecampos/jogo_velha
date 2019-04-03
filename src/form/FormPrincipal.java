@@ -5,10 +5,16 @@
  */
 package form;
 
+import java.io.IOException;
 import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SwingConstants;
+import static jogovelha.JogoVelha.server;
+import static jogovelha.JogoVelha.socket;
 
 /**
  *
@@ -20,13 +26,10 @@ public class FormPrincipal extends javax.swing.JDialog {
      * Creates new form FormPrincipal
      * @param parent
      * @param modal
-     * @throws java.net.UnknownHostException
      */
-    public FormPrincipal(java.awt.Frame parent, boolean modal) throws UnknownHostException {
+    public FormPrincipal(java.awt.Frame parent, boolean modal){
         super(parent, modal);
         initComponents();
-        
-        this.lblIp.setText(InetAddress.getLocalHost().getHostAddress());
     }
 
     /**
@@ -38,24 +41,22 @@ public class FormPrincipal extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        lblIp = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        pgClient = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         edtIp = new javax.swing.JTextField();
         btnConectar = new javax.swing.JButton();
+        pgServer = new javax.swing.JPanel();
+        lblIp = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Meu IP:");
-
-        lblIp.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblIp.setText("255.255.255.255");
-        lblIp.setName("lblIp"); // NOI18N
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Conectar à um computador"));
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
+            }
+        });
 
         jLabel3.setText("IP");
 
@@ -63,67 +64,107 @@ public class FormPrincipal extends javax.swing.JDialog {
 
         btnConectar.setLabel("Conectar");
         btnConectar.setName("btnConectar"); // NOI18N
+        btnConectar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConectarActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout pgClientLayout = new javax.swing.GroupLayout(pgClient);
+        pgClient.setLayout(pgClientLayout);
+        pgClientLayout.setHorizontalGroup(
+            pgClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pgClientLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(pgClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pgClientLayout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(edtIp)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 90, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pgClientLayout.createSequentialGroup()
+                        .addGap(0, 298, Short.MAX_VALUE)
                         .addComponent(btnConectar)))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        pgClientLayout.setVerticalGroup(
+            pgClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pgClientLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(edtIp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addComponent(btnConectar)
                 .addContainerGap())
         );
+
+        jTabbedPane1.addTab("Conectar ao Amigo", pgClient);
+
+        lblIp.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblIp.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblIp.setText("255.255.255.255");
+        lblIp.setName("lblIp"); // NOI18N
+
+        javax.swing.GroupLayout pgServerLayout = new javax.swing.GroupLayout(pgServer);
+        pgServer.setLayout(pgServerLayout);
+        pgServerLayout.setHorizontalGroup(
+            pgServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblIp, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
+        );
+        pgServerLayout.setVerticalGroup(
+            pgServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblIp, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Receber uma Conexão", pgServer);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblIp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addGap(44, 44, 44)))
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblIp)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConectarActionPerformed
+        try {
+            //JogoVelha.server.close();
+            
+            socket = new Socket(edtIp.getText(), 3031);
+            
+            FormGame frmGame = new FormGame(null, true, "O");
+            frmGame.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnConectarActionPerformed
+
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        if (jTabbedPane1.getSelectedComponent() == pgServer){
+            try {
+                lblIp.setText(InetAddress.getLocalHost().getHostAddress());
+                
+                server = new ServerSocket(3031);
+                
+                socket = server.accept();
+                    
+                FormGame frmGame = new FormGame(null, true, "X");
+                frmGame.setVisible(true);
+                
+                socket.close();
+            } catch (UnknownHostException ex) {
+                Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jTabbedPane1StateChanged
 
     /**
      * @param args the command line arguments
@@ -156,19 +197,15 @@ public class FormPrincipal extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 FormPrincipal dialog;
-                try {
-                    dialog = new FormPrincipal(new javax.swing.JFrame(), true);
-                
-                    dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                        @Override
-                        public void windowClosing(java.awt.event.WindowEvent e) {
-                            System.exit(0);
-                        }
-                    });
-                    dialog.setVisible(true);
-                } catch (UnknownHostException ex) {
-                    Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                dialog = new FormPrincipal(new javax.swing.JFrame(), true);
+
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
@@ -176,9 +213,10 @@ public class FormPrincipal extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConectar;
     private javax.swing.JTextField edtIp;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblIp;
+    private javax.swing.JPanel pgClient;
+    private javax.swing.JPanel pgServer;
     // End of variables declaration//GEN-END:variables
 }

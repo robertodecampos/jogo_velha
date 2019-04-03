@@ -6,27 +6,28 @@
 package jogovelha;
 
 import form.FormPrincipal;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author rober
  */
 public class JogoVelha {
-
+    
+    public static ServerSocket server;
+    public static Socket socket;
+    
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        
-        try{
-            FormPrincipal frmPrincipal = new FormPrincipal(null, false);
-            frmPrincipal.setVisible(true);
-            System.out.println("exibido");
-        } catch (UnknownHostException erro){
-            System.out.println(erro.getMessage());
-        }
+    public static void main(String[] args){
+        FormPrincipal frmPrincipal = new FormPrincipal(null, false);
+        frmPrincipal.setVisible(true);
     }
     
 }
